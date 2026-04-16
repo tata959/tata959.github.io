@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>杨璐瑗 Kat | Data + Life Sampling</title>
+  <meta name="description" content="杨璐瑗 Kat 的个人主页：人生采样记录、实战补丁、算力轨迹、技术栈与数字洞察。" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: "#FFF8E7",
+            butter: "#FFE7A8",
+            yolk: "#FFC95B",
+            caramel: "#F39B56",
+            peach: "#FF7D7A",
+            mint: "#61C9B7",
+            lake: "#5AA9E6",
+            ink: "#3C2C1B",
+            cocoa: "#6C4A2C",
+            panel: "rgba(255,255,255,0.75)"
+          },
+          fontFamily: {
+            display: ["Baloo 2", "Noto Sans SC", "sans-serif"],
+            body: ["Noto Sans SC", "sans-serif"]
+          },
+          boxShadow: {
+            soft: "0 12px 45px rgba(243,155,86,.20)"
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      scroll-behavior: smooth;
+      background:
+        linear-gradient(120deg, #fff6dd 0%, #ffeec8 34%, #dff3ea 70%, #cfe9f5 100%),
+        radial-gradient(1200px 800px at 10% -20%, rgba(255,201,91,.45), transparent 60%),
+        radial-gradient(950px 650px at 95% 20%, rgba(97,201,183,.35), transparent 55%),
+        radial-gradient(760px 480px at 30% 100%, rgba(255,125,122,.22), transparent 65%),
+        #FFF8E7;
+    }
+    .frost-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,.06));
+      backdrop-filter: blur(8px) saturate(105%);
+      -webkit-backdrop-filter: blur(8px) saturate(105%);
+      pointer-events: none;
+    }
+    .grain::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .2;
+      background-image: radial-gradient(rgba(108,74,44,.16) 0.6px, transparent 0.6px);
+      background-size: 2px 2px;
+      z-index: -3;
+    }
+    .grain::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .14;
+      background-image:
+        radial-gradient(rgba(60,44,27,.16) 0.5px, transparent 0.5px),
+        radial-gradient(rgba(255,255,255,.18) 0.6px, transparent 0.6px);
+      background-position: 0 0, 20px 20px;
+      background-size: 3px 3px, 4px 4px;
+      mix-blend-mode: multiply;
+      z-index: -2;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    .type-caret {
+      border-right: 3px solid #F39B56;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .floaty {
+      animation: floaty 5.5s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+    .node {
+      position: relative;
+    }
+    .node::before {
+      content: "";
+      position: absolute;
+      left: -1.6rem;
+      top: .55rem;
+      width: .9rem;
+      height: .9rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #FFC95B, #5AA9E6);
+      box-shadow: 0 0 0 4px rgba(255,201,91,.2);
+    }
+    .milestone {
+      border: 1px dashed rgba(243,155,86,.45);
+      border-radius: 1rem;
+      background: linear-gradient(135deg, rgba(255,201,91,.22), rgba(90,169,230,.12));
+      padding: .85rem 1rem;
+    }
+    .progress-fill {
+      transform-origin: left center;
+      transform: scaleX(0);
+    }
+    .ring {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      border-radius: 9999px;
+      background: conic-gradient(#5AA9E6 var(--val), #FFE7A8 0);
+    }
+    .ring::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: inherit;
+      background: rgba(255, 248, 231, .96);
+      box-shadow: inset 0 0 0 1px rgba(108,74,44,.12);
+    }
+    .ring > span {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #6C4A2C;
+      z-index: 2;
+    }
+    .ring-sm {
+      width: 102px;
+      height: 102px;
+    }
+    .ring-sm::after {
+      inset: 12px;
+    }
+  </style>
+</head>
+<body class="font-body text-ink grain">
+  <canvas id="particleCanvas" class="fixed inset-0 -z-10 opacity-40"></canvas>
+  <div class="frost-layer"></div>
+
+  <main class="px-5 md:px-10 lg:px-16 pb-20">
+    <header class="max-w-6xl mx-auto pt-10 md:pt-14 pb-14 relative">
+      <img src="./assets/images/02980be93a0d07f040044deab46f1e3d.jpg" alt="浮动照片占位符 1" class="hidden md:block absolute -left-8 top-20 w-28 rounded-2xl border-4 border-white/70 shadow-soft rotate-[-6deg] floaty" />
+      <img src="./assets/images/b1876525b6193b814ddbb3f684ef7608.jpg" alt="浮动照片占位符 2" class="hidden lg:block absolute -right-8 top-44 w-28 rounded-2xl border-4 border-white/70 shadow-soft rotate-[8deg] floaty" style="animation-delay:1.2s;" />
+
+      <div class="grid lg:grid-cols-[1.05fr_1fr] gap-8 items-stretch">
+        <section class="rounded-[2rem] p-6 md:p-9 bg-panel border border-white/70 shadow-soft reveal flex flex-col">
+          <p class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yolk/35 text-cocoa border border-caramel/30 text-sm w-fit">
+            <span class="text-lg">🧁</span> Data Analyst · AI Explorer
+          </p>
+          <h1 class="font-display text-4xl md:text-6xl font-extrabold mt-4 leading-tight">
+            你好，我是 <span id="typeName" class="text-caramel type-caret">杨璐瑗 Kat</span>
+          </h1>
+          <div class="mt-5 text-cocoa rounded-2xl bg-white/65 border border-white/80 p-4 leading-relaxed">
+            <p><strong>[ 系统自述 · System Log ]：</strong></p>
+            <p class="mt-1">Kat / 26Y / GPA 3.77 / QS Top 100 Univ. / IELTS 6.0</p>
+            <p class="mt-1">一位在随机过程中寻找确定性的数据玩家</p>
+            <p class="mt-3"><strong>[ 运行状态 · Runtime Status ]：</strong></p>
+            <p class="mt-1">目前处于高性能模式，准备接入下一个高挑战增长业务</p>
+          </div>
+          <div class="mt-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <article class="rounded-2xl bg-butter/45 p-4 border border-white/80">
+              <p class="text-sm text-cocoa">训练集 (Training Set)</p>
+              <p class="font-bold mt-1">应用统计学硕士 @ UM</p>
+              <p class="text-sm text-cocoa mt-1">Score: 3.77 / 4.00</p>
+              <p class="text-sm text-cocoa mt-1">高显著性的学术采样结果</p>
+            </article>
+            <article class="rounded-2xl bg-mint/25 p-4 border border-white/80">
+              <p class="text-sm text-cocoa">输出函数 (Output Functions)</p>
+              <p class="font-bold mt-1">数据分析 + AI探索</p>
+              <p class="text-sm text-cocoa mt-1">Data x Decision</p>
+            </article>
+            <article class="rounded-2xl bg-peach/20 p-4 border border-white/80">
+              <p class="text-sm text-cocoa">特征工程 (Feature Engineering)</p>
+              <p class="font-bold mt-1">拒接平庸</p>
+              <p class="text-sm text-cocoa mt-1">优化生活采样效率</p>
+            </article>
+            <article class="rounded-2xl bg-lake/20 p-4 border border-white/80">
+              <p class="text-sm text-cocoa">数据接口 (API Endpoint)</p>
+              <p class="font-bold mt-1 break-all">tatalu959@gmail.com</p>
+              <p class="text-sm text-cocoa mt-1">欢迎连接合作</p>
+            </article>
+          </div>
+        </section>
+
+        <aside class="rounded-[2rem] p-5 bg-white/82 border border-white shadow-soft reveal flex items-center">
+          <div class="w-full h-full rounded-3xl border-2 border-dashed border-caramel/35 bg-[#fff9eb] p-4 md:p-6">
+            <!-- 图片占位：这里可替换为你的个人照片 -->
+            <!-- 图片占位：这里可替换为 5b1cef1c57cc8fb33eefc7727f1c9459.jpg -->
+            <img src="./assets/images/e54d250b050202f147507bd3421ec092.jpg" alt="个人照片占位符" class="w-full h-[420px] md:h-[520px] object-cover rounded-2xl" />
+            <div class="mt-4">
+              <!-- PDF 占位：将 href 替换为你的真实简历 PDF 路径 -->
+              <a href="./assets/docs/Kat_Resume.pdf" download class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yolk/40 border border-caramel/35 text-cocoa font-semibold hover:bg-yolk/55 transition">
+                <span>📄</span>
+                <span>获取标准版简历 (PDF)</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section id="insight" class="max-w-6xl mx-auto mb-20 reveal">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold mb-6">全域数字原住民 (Global Digital Native)</h2>
+      <div class="grid lg:grid-cols-[1.05fr_1fr] gap-6 items-stretch">
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft h-full lg:min-h-[560px] flex flex-col">
+          <p class="leading-relaxed text-cocoa">🎮 峡谷策略家 —— 云顶宗师，擅长寻找版本最优解</p>
+          <p class="leading-relaxed text-cocoa mt-3">🌍 主流平台全覆盖：深耕微博、小红书、抖音，同时活跃于 IG 与 X (Twitter)，具备跨文化国际化视野</p>
+          <p class="leading-relaxed text-cocoa mt-3">📈 社群增长实战：曾深度参与豆瓣小组建设，见证并驱动社群规模从 900 人向 6 万人的非线性跨越</p>
+          <p class="leading-relaxed text-cocoa mt-3">🧭 多模态观察：从内娱/韩娱粉丝经济到二次元/游戏硬核文化，能快速识别语料特征与情绪阈值</p>
+          <div class="mt-5 rounded-2xl border border-dashed border-caramel/30 bg-[#fff6df] p-3">
+            <!-- 图片占位：在这里加入全域数字原住民板块的配图 -->
+            <img src="./assets/images/1f758ebb2b675ce166c9251aafe868c3.jpg" alt="全域数字原住民配图占位符" class="w-full h-40 object-cover rounded-xl">
+          </div>
+          <p class="leading-relaxed text-cocoa mt-5 font-semibold">特质：统计学家的理性视角 + 互联网冲浪手的一线嗅觉</p>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft h-full lg:min-h-[560px] flex flex-col">
+          <p class="font-semibold text-cocoa mb-4">Signal Radar</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1 content-start">
+            <article class="rounded-2xl border border-white/80 bg-[#fff7df] p-4 flex flex-col items-center text-center">
+              <div class="ring ring-sm" style="--val:360deg"><span>100%</span></div>
+              <p class="text-cocoa font-medium mt-3">内娱/韩娱</p>
+              <p class="text-sm text-cocoa">舆情分析进度 100%</p>
+            </article>
+            <article class="rounded-2xl border border-white/80 bg-[#fff7df] p-4 flex flex-col items-center text-center">
+              <div class="ring ring-sm" style="--val:342deg"><span>95%</span></div>
+              <p class="text-cocoa font-medium mt-3">二次元/动漫</p>
+              <p class="text-sm text-cocoa">世界观解析 95%</p>
+            </article>
+            <article class="rounded-2xl border border-white/80 bg-[#fff7df] p-4 flex flex-col items-center text-center">
+              <div class="ring ring-sm" style="--val:324deg"><span>90%</span></div>
+              <p class="text-cocoa font-medium mt-3">LOL/游戏</p>
+              <p class="text-sm text-cocoa">策略理解 90%</p>
+            </article>
+            <article class="rounded-2xl border border-white/80 bg-[#fff7df] p-4 flex flex-col items-center text-center">
+              <div class="ring ring-sm" style="--val:360deg"><span>100%</span></div>
+              <p class="text-cocoa font-medium mt-3">全球趋势(X/IG)</p>
+              <p class="text-sm text-cocoa">同步速率 100%</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="timeline" class="max-w-6xl mx-auto mb-20 reveal relative">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <h2 class="font-display text-3xl md:text-4xl font-extrabold">人生采样记录 (Life Sampling Log)</h2>
+        <p class="text-cocoa">向下滑动，查看关键存档点</p>
+      </div>
+      <img src="./assets/images/f7f43dc1531628b94255a2faad81b65d.jpg" alt="时间线浮动图 A" class="hidden lg:block absolute -left-16 top-44 w-36 rounded-2xl border-4 border-white/70 shadow-soft rotate-[-8deg] floaty" />
+      <!-- 图片占位：这里可替换为 b1e5fff152a111ea399cf3b0ea590514.jpg -->
+      <img src="./assets/images/61a32e89f917c03ad28f5a3c7afbb29b.jpg" alt="时间线浮动图 B" class="hidden lg:block absolute -right-16 bottom-16 w-36 rounded-2xl border-4 border-white/70 shadow-soft rotate-[6deg] floaty" style="animation-delay:.8s;" />
+      <div class="rounded-[2rem] p-6 md:p-8 bg-white/78 border border-white shadow-soft max-h-[620px] overflow-y-auto">
+        <div class="pl-6 border-l-2 border-caramel/45 space-y-7">
+          <div class="node milestone">
+            <p class="text-caramel font-extrabold">🛰 v1.0 (2017 - 2021) · 基座构建 @ 重庆</p>
+            <h3 class="text-xl font-bold mt-1">金融学底层架构搭建</h3>
+            <p class="text-cocoa mt-2">完成金融学底层架构搭建，在重庆工商大学录入金融逻辑，初次尝试将行业洞察转化为结构化报告。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2017.09 - 2021.06</p>
+            <h3 class="text-xl font-bold mt-1">重庆工商大学 · 金融学士</h3>
+            <p class="text-cocoa mt-2">系统学习经济学、公司金融与统计基础，完成“金融认知模块”的初次训练。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2020.09 - 2020.12</p>
+            <h3 class="text-xl font-bold mt-1">世界银行贷款支持项目（重庆城乡塑料垃圾综合治理）</h3>
+            <p class="text-cocoa mt-2">依据 ESSS 标准参与调研、访谈与数据清洗，支持社会影响评估报告撰写与风险识别建议。</p>
+          </div>
+
+          <div class="node milestone">
+            <p class="text-caramel font-extrabold">🧩 v2.0 (2021 - 2024) · 插件加载 & 风险重构</p>
+            <h3 class="text-xl font-bold mt-1">风险咨询与合规审计插件加载</h3>
+            <p class="text-cocoa mt-2">载入风险咨询与合规审计插件（Deloitte/西部金融研究院）。在多模态业务场景中完成实战补丁，实现从金融理论到风险治理的逻辑迁移。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2022.04 - 2022.07</p>
+            <h3 class="text-xl font-bold mt-1">西部金融研究院 · 内容编辑</h3>
+            <p class="text-cocoa mt-2">利用 Wind 抓取并清洗区域上市公司数据，独立完成研究报告三板部分撰写。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2023.05 - 2024.08</p>
+            <h3 class="text-xl font-bold mt-1">德勤 Deloitte · 风险咨询助理分析师</h3>
+            <p class="text-cocoa mt-2">围绕商业贿赂及第三方管理等高风险场景输出 30+ 份尽调报告，并搭建多维月报体系沉淀分析模板。</p>
+          </div>
+
+          <div class="node milestone">
+            <p class="text-caramel font-extrabold">🚀 v3.0 (2024 - 2026) · 统计学内核升级 @ 吉隆坡</p>
+            <h3 class="text-xl font-bold mt-1">应用统计学高阶架构</h3>
+            <p class="text-cocoa mt-2">切换至“应用统计学”高阶架构。以 GPA 3.77 完成人生算法的显著性迭代，深度集成 Python/SQL 等数据治理工具链。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2024.10 - 2026.04</p>
+            <h3 class="text-xl font-bold mt-1">马来亚大学 · 应用统计学硕士</h3>
+            <p class="text-cocoa mt-2">强化抽样调查、因子分析、预测建模与可视化方法，形成结构化决策分析链路。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2025.02 - 2025.06</p>
+            <h3 class="text-xl font-bold mt-1">中国建筑第八工程局（马来西亚） · 财务实习</h3>
+            <p class="text-cocoa mt-2">通过 AutoAccount 统一票据数据字段格式，完成银行账单复核与调节表编制，强化数据一致性与合规存档。</p>
+          </div>
+          <div class="node">
+            <p class="text-caramel font-bold">2025.07 - 2025.10</p>
+            <h3 class="text-xl font-bold mt-1">上海明品医学数据科技有限公司 · 数据分析实习</h3>
+            <p class="text-cocoa mt-2">利用 Python 脚本实现报告全链路自动化生成，将报告校对耗时降低 90%，并实现核心指标 BI 看板实时监控。</p>
+          </div>
+
+          <div class="node milestone">
+            <p class="text-caramel font-extrabold">🛰️ v3.5 (2026 - Present) · 寻找全局最优解</p>
+            <h3 class="text-xl font-bold mt-1">高性能运行状态</h3>
+            <p class="text-cocoa mt-2">系统当前运行平稳，正在进行大规模人生参数平滑。期待接入具备高增长潜力的业务场景，通过确定性逻辑对抗随机性挑战。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="max-w-6xl mx-auto mb-20 reveal">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold mb-6">实战补丁 (Production Patches)</h2>
+      <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft">
+          <p class="text-sm text-caramel font-semibold">Patch-01 · Pharma Data</p>
+          <h3 class="text-xl font-bold mt-2">上海明品：自动化流程重构</h3>
+          <p class="text-cocoa mt-3 leading-relaxed">利用 Python 脚本实现报告全链路自动化生成，将报告校对耗时降低 90%，并实现核心指标 BI 看板实时监控。</p>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft">
+          <p class="text-sm text-caramel font-semibold">Patch-02 · Compliance Ops</p>
+          <h3 class="text-xl font-bold mt-2">中建八局：财税合规治理</h3>
+          <p class="text-cocoa mt-3 leading-relaxed">通过 AutoAccount 统一票据数据字段格式，完成银行账单复核与调节表编制，强化数据一致性与合规存档。</p>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft">
+          <p class="text-sm text-caramel font-semibold">Patch-03 · Risk Intelligence</p>
+          <h3 class="text-xl font-bold mt-2">德勤：风险穿透分析</h3>
+          <p class="text-cocoa mt-3 leading-relaxed">围绕商业贿赂及第三方管理等高风险场景输出 30+ 份尽调报告，并搭建多维月报体系沉淀分析模板。</p>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft">
+          <p class="text-sm text-caramel font-semibold">Patch-04 · Research Integration</p>
+          <h3 class="text-xl font-bold mt-2">西部金融研究院：行业研究集成</h3>
+          <p class="text-cocoa mt-3 leading-relaxed">利用 Wind 抓取并清洗区域上市公司数据，独立完成研究报告三板部分撰写。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="tracks" class="max-w-6xl mx-auto mb-20 reveal">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold mb-6">算力轨迹 (Computational Tracks)</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft flex flex-col">
+          <h3 class="text-2xl font-bold">Track A · Olist 电商诊断</h3>
+          <p class="mt-4"><span class="font-bold text-caramel">[背景]</span> 电商转化受多因素耦合影响，存在预算投放与渠道归因偏差。</p>
+          <p class="mt-3"><span class="font-bold text-caramel">[技术栈]</span> SQL + Python + 归因逻辑 + 指标切片（display/email/social/search）。</p>
+          <p class="mt-3"><span class="font-bold text-caramel">[结果]</span> 模拟资源重分配后 ROI 提升约 <strong>4.29%</strong>，并形成可复用分析流程。</p>
+          <div class="mt-4 rounded-2xl border border-caramel/25 bg-[#fff3d1] p-3">
+            <svg viewBox="0 0 420 160" class="w-full h-44">
+              <defs>
+                <linearGradient id="roiLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#F39B56" />
+                  <stop offset="100%" stop-color="#5AA9E6" />
+                </linearGradient>
+              </defs>
+              <path d="M20 138 L96 126 L160 114 L228 92 L295 82 L380 35" fill="none" stroke="url(#roiLine)" stroke-width="5" stroke-linecap="round" stroke-dasharray="450" stroke-dashoffset="450">
+                <animate attributeName="stroke-dashoffset" from="450" to="0" dur="2.5s" fill="freeze"></animate>
+              </path>
+              <circle cx="380" cy="35" r="6" fill="#5AA9E6">
+                <animate attributeName="r" values="5;8;5" dur="1.4s" repeatCount="indefinite"></animate>
+              </circle>
+              <text x="290" y="28" fill="#6C4A2C" font-size="16" font-weight="700">ROI +4.29%</text>
+            </svg>
+          </div>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft flex flex-col">
+          <h3 class="text-2xl font-bold">Track B · AIGC 音色生成</h3>
+          <p class="mt-4"><span class="font-bold text-caramel">[背景]</span> 希望实现更高保真度的音色转换与风格迁移，兼顾可听感与迭代效率。</p>
+          <p class="mt-3"><span class="font-bold text-caramel">[技术栈]</span> UVR + RipX + RVC + Audition，多轮数据清洗、音轨分离、模型微调。</p>
+          <p class="mt-3"><span class="font-bold text-caramel">[结果]</span> 构建稳定的 AIGC 音频生成工作流，显著提升生成质量与实验复现速度。</p>
+          <div class="mt-4 rounded-2xl border border-caramel/25 bg-[#fff3d1] p-3">
+            <!-- 音频占位：将 src 改为你的音频路径，例如 ./assets/audio/aigc_demo.mp3 -->
+            <audio controls preload="metadata" class="w-full">
+              <source src="./assets/audio/舍得02.mp3" type="audio/mpeg" />
+              你的浏览器不支持 audio 标签。
+            </audio>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="max-w-6xl mx-auto mb-20 reveal">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold mb-6">技术栈 (Tech Stack)</h2>
+      <div class="grid lg:grid-cols-[1fr_1.1fr] gap-6">
+        <div class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft">
+          <p class="text-cocoa mb-4 font-semibold">Core Modules</p>
+          <div class="flex flex-wrap gap-3 text-sm">
+            <span class="px-4 py-2 rounded-full bg-yolk/30 border border-caramel/30">🐍 Python</span>
+            <span class="px-4 py-2 rounded-full bg-lake/20 border border-lake/40">🗄 SQL / MySQL</span>
+            <span class="px-4 py-2 rounded-full bg-mint/25 border border-mint/45">📊 Power BI</span>
+            <span class="px-4 py-2 rounded-full bg-peach/20 border border-peach/40">📈 Excel</span>
+            <span class="px-4 py-2 rounded-full bg-butter/50 border border-caramel/25">🧪 R / SPSS</span>
+            <span class="px-4 py-2 rounded-full bg-lake/20 border border-lake/40">🧠 Prompt Engineering</span>
+            <span class="px-4 py-2 rounded-full bg-mint/25 border border-mint/45">🎛 AIGC 多模态应用 (UVR/RVC/AU)</span>
+            <span class="px-4 py-2 rounded-full bg-peach/20 border border-peach/40">⚙ Workflow Automation</span>
+          </div>
+        </div>
+        <div class="rounded-3xl bg-white/82 border border-white p-6 shadow-soft space-y-4">
+          <p class="text-cocoa font-semibold">Execution Cooldown Bars</p>
+          <div><div class="flex justify-between text-sm"><span>Data Analytics</span><span>92%</span></div><div class="h-3 rounded-full bg-butter/45 overflow-hidden mt-1"><div class="progress-fill h-full bg-gradient-to-r from-caramel to-lake" data-level="92"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span>Prompt Engineering</span><span>90%</span></div><div class="h-3 rounded-full bg-butter/45 overflow-hidden mt-1"><div class="progress-fill h-full bg-gradient-to-r from-caramel to-lake" data-level="90"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span>AIGC Audio Workflow</span><span>88%</span></div><div class="h-3 rounded-full bg-butter/45 overflow-hidden mt-1"><div class="progress-fill h-full bg-gradient-to-r from-caramel to-lake" data-level="88"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span>Workflow Automation</span><span>91%</span></div><div class="h-3 rounded-full bg-butter/45 overflow-hidden mt-1"><div class="progress-fill h-full bg-gradient-to-r from-caramel to-lake" data-level="91"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files" class="max-w-6xl mx-auto mb-20 reveal">
+      <h2 class="font-display text-3xl md:text-4xl font-extrabold mb-6">逻辑原稿（Code Base）</h2>
+      <div class="grid md:grid-cols-3 gap-5">
+        <article class="rounded-3xl bg-white/82 border border-white p-5 shadow-soft">
+          <p class="text-caramel font-semibold">Python #1</p>
+          <h3 class="font-bold mt-1">olist_analysis.py</h3>
+          <a href="./assets/code/olist_project_full_analysis.py" download class="mt-4 inline-flex px-4 py-2 rounded-xl bg-white border border-caramel/35 text-cocoa font-medium hover:bg-butter/35 transition">下载 .py</a>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-5 shadow-soft">
+          <p class="text-caramel font-semibold">Python #2</p>
+          <h3 class="font-bold mt-1">替换改进小工具.py</h3>
+          <a href="./assets/code/替换改进.py" download class="mt-4 inline-flex px-4 py-2 rounded-xl bg-white border border-caramel/35 text-cocoa font-medium hover:bg-butter/35 transition">下载 .py</a>
+        </article>
+        <article class="rounded-3xl bg-white/82 border border-white p-5 shadow-soft">
+          <p class="text-caramel font-semibold">SQL #1</p>
+          <h3 class="font-bold mt-1">olist_analysis.sql</h3>
+          <a href="./assets/code/olist_sql_full.sql" download class="mt-4 inline-flex px-4 py-2 rounded-xl bg-white border border-caramel/35 text-cocoa font-medium hover:bg-butter/35 transition">下载 .sql</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="px-6 pb-10 text-center text-cocoa">
+    © 2026 杨璐瑗 Kat · tatalu959@gmail.com
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    const fullName = "杨璐瑗 Kat";
+    const nameEl = document.getElementById("typeName");
+    let i = 0;
+    function typeWriter() {
+      if (i <= fullName.length) {
+        nameEl.textContent = fullName.slice(0, i);
+        i += 1;
+        setTimeout(typeWriter, 120);
+      } else {
+        nameEl.classList.remove("type-caret");
+      }
+    }
+    typeWriter();
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray(".reveal").forEach((el) => {
+      gsap.fromTo(el, { y: 28, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 85%" }
+      });
+    });
+
+    gsap.utils.toArray(".progress-fill").forEach((bar) => {
+      const level = Number(bar.dataset.level || 0);
+      gsap.to(bar, {
+        scaleX: level / 100,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: { trigger: bar, start: "top 90%" }
+      });
+    });
+
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+    let w, h, dots;
+    const total = 68;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      dots = Array.from({ length: total }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: 0.2 + Math.random() * 0.55,
+        vy: -0.12 + Math.random() * 0.24,
+        r: 0.8 + Math.random() * 1.5
+      }));
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      dots.forEach((d) => {
+        d.x += d.vx;
+        d.y += d.vy;
+        if (d.x > w + 10) d.x = -10;
+        if (d.y > h + 10) d.y = -10;
+        if (d.y < -10) d.y = h + 10;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(243,155,86,.36)";
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    draw();
+  </script>
+</body>
+</html>
